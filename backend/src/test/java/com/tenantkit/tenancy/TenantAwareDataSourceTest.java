@@ -1,4 +1,4 @@
-package com.tenantkit.tenancy;
+package com.saaskit.tenancy;
 
 import org.junit.jupiter.api.Test;
 

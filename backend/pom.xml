@@ -11,10 +11,10 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.tenantkit</groupId>
-    <artifactId>tenantkit</artifactId>
+    <groupId>com.saaskit</groupId>
+    <artifactId>saaskit</artifactId>
     <version>0.1.0</version>
-    <name>TenantKit</name>
+    <name>SaaSKit</name>
     <description>Production-grade multi-tenant SaaS starter kit</description>
 
     <properties>

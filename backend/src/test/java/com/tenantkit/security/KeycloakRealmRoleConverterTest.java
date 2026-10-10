@@ -1,4 +1,4 @@
-package com.tenantkit.security;
+package com.saaskit.security;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.AbstractAuthenticationToken;

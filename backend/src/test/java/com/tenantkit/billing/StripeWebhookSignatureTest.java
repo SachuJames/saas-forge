@@ -1,4 +1,4 @@
-package com.tenantkit.billing;
+package com.saaskit.billing;
 
 import com.stripe.exception.SignatureVerificationException;
 import com.stripe.net.Webhook;
