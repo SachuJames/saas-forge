@@ -1,6 +1,6 @@
-# SaaSForge
+# TenantKit
 
-[![CI](https://github.com/SachuJames/saas-forge/actions/workflows/ci.yml/badge.svg)](https://github.com/SachuJames/saas-forge/actions/workflows/ci.yml)
+[![CI](https://github.com/SachuJames/tenantkit/actions/workflows/ci.yml/badge.svg)](https://github.com/SachuJames/tenantkit/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 ![Java 21](https://img.shields.io/badge/Java-21-blue.svg)
 ![Spring Boot 3](https://img.shields.io/badge/Spring_Boot-3-brightgreen.svg)
@@ -69,8 +69,8 @@ the tenant registry.
 Prerequisites: Docker and Docker Compose.
 
 ```bash
-git clone https://github.com/SachuJames/saas-forge.git
-cd saas-forge/deploy
+git clone https://github.com/SachuJames/tenantkit.git
+cd tenantkit/deploy
 docker compose up --build
 ```
 
@@ -123,7 +123,7 @@ All settings come from the environment. Nothing secret is hardcoded.
 ## Project structure
 
 ```
-saas-forge/
+tenantkit/
 ├── backend/                    # Spring Boot 3 application
 │   └── src/main/java/com/tenantforge/
 │       ├── tenancy/            # TenantContext, filter, provisioning, registry
