@@ -16,10 +16,11 @@ import java.io.IOException;
 /**
  * Resolves the tenant for every request and pins it to the TenantContext.
  *
- * Resolution order: X-Tenant-ID header first (simple for APIs and local
- * dev), then the tenant_id claim on the JWT (the Keycloak mapper puts it
- * there at login). Requests that carry neither are rejected unless they
- * target the admin API, the public API, or actuator endpoints.
+ * The X-Tenant-ID header is a routing hint, not proof of authorization:
+ * TenantConsistencyFilter runs after Spring Security validates the JWT and
+ * rejects any authenticated request whose header disagrees with the token's
+ * tenant_id claim. Unauthenticated requests (public endpoints, local dev)
+ * may use the header on its own.
  */
 @Component
 @Order(1)

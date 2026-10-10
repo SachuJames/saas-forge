@@ -10,8 +10,10 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Data-subject endpoints. Users can always export or erase their own data;
- * admins can act on any user in the current tenant.
+ * Data-subject endpoints. Export always acts on the caller, resolved from
+ * the JWT subject; there is no parameter to point it at someone else.
+ * Erasure is admin-only and scoped to the current tenant by the schema
+ * the request runs against.
  */
 @RestController
 @RequestMapping("/api/gdpr")
@@ -24,11 +26,8 @@ public class GdprController {
     }
 
     @GetMapping("/export")
-    public ResponseEntity<Map<String, Object>> exportMine(@AuthenticationPrincipal Jwt jwt,
-                                                          @RequestParam(required = false) UUID userId) {
-        // Without an explicit userId this would resolve the caller from the
-        // JWT subject; the param keeps it testable and explicit for now.
-        return ResponseEntity.ok(gdpr.exportUserData(userId));
+    public ResponseEntity<Map<String, Object>> exportMine(@AuthenticationPrincipal Jwt jwt) {
+        return ResponseEntity.ok(gdpr.exportOwnData(jwt.getSubject()));
     }
 
     @DeleteMapping("/erasure")

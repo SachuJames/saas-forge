@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-echo "== TenantKit demo =="
+echo "== SaaSKit demo =="
 echo "Starting postgres, keycloak, backend, frontend..."
 docker compose up -d --build
 echo "Waiting for backend..."

@@ -28,6 +28,11 @@ public class TenantAwareDataSource extends DelegatingDataSource {
         String tenantId = TenantContext.getTenantId();
         if (tenantId != null && !tenantId.isBlank()) {
             connection.setSchema(schemaName(tenantId));
+        } else {
+            // No tenant in context: fall back to the shared schema. A pooled
+            // connection must never keep a previous tenant's schema, or an
+            // unscoped request could read or write the wrong tenant's data.
+            connection.setSchema("public");
         }
         return connection;
     }

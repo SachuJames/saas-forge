@@ -1,12 +1,14 @@
 package com.saaskit.config;
 
 import com.saaskit.security.KeycloakRealmRoleConverter;
+import com.saaskit.tenancy.TenantConsistencyFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
@@ -36,7 +38,11 @@ public class SecurityConfig {
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2
-                        .jwt(jwt -> jwt.jwtAuthenticationConverter(roleConverter)));
+                        .jwt(jwt -> jwt.jwtAuthenticationConverter(roleConverter)))
+                // After the token is validated, the tenant_id claim becomes
+                // authoritative: a forged X-Tenant-ID header is rejected here.
+                .addFilterAfter(new TenantConsistencyFilter(),
+                        BearerTokenAuthenticationFilter.class);
         return http.build();
     }
 }

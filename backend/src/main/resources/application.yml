@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/tenantforge}
-    username: ${SPRING_DATASOURCE_USERNAME:tenantforge}
-    password: ${SPRING_DATASOURCE_PASSWORD:tenantforge}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/saaskit}
+    username: ${SPRING_DATASOURCE_USERNAME:saaskit}
+    password: ${SPRING_DATASOURCE_PASSWORD:saaskit}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -21,7 +21,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${APP_SECURITY_ISSUER_URI:http://localhost:8180/realms/tenantforge}
+          issuer-uri: ${APP_SECURITY_ISSUER_URI:http://localhost:8180/realms/saaskit}
 
 app:
   stripe:

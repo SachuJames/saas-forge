@@ -110,11 +110,11 @@ All settings come from the environment. Nothing secret is hardcoded.
 | `SPRING_DATASOURCE_URL`       | `jdbc:postgresql://localhost:5432/saaskit` | Postgres connection                 |
 | `SPRING_DATASOURCE_USERNAME`  | `saaskit`                              | DB user                                 |
 | `SPRING_DATASOURCE_PASSWORD`  | `saaskit`                              | DB password                             |
-| `KEYCLOAK_ISSUER`             | `http://localhost:8180/realms/saaskit` | Keycloak realm (JWT issuer)             |
-| `STRIPE_API_KEY`              | _(empty)_                              | Stripe secret key (billing off if empty)|
-| `STRIPE_WEBHOOK_SECRET`       | _(empty)_                              | Stripe webhook signing secret           |
-| `STRIPE_PRICE_PRO`            | _(empty)_                              | Stripe price ID for the PRO plan        |
-| `STRIPE_PRICE_ENTERPRISE`     | _(empty)_                              | Stripe price ID for the ENTERPRISE plan |
+| `APP_SECURITY_ISSUER_URI`     | `http://localhost:8180/realms/saaskit` | Keycloak realm (JWT issuer)             |
+| `APP_STRIPE_API_KEY`          | _(empty)_                              | Stripe secret key (billing off if empty)|
+| `APP_STRIPE_WEBHOOK_SECRET`   | _(empty)_                              | Stripe webhook signing secret           |
+| `APP_STRIPE_PRICE_PRO`        | _(empty)_                              | Stripe price ID for the PRO plan        |
+| `APP_STRIPE_PRICE_ENTERPRISE` | _(empty)_                              | Stripe price ID for the ENTERPRISE plan |
 
 ## Project structure
 
@@ -167,14 +167,33 @@ POST /api/public/stripe/webhook     # Stripe events (signature verified)
 
 ```bash
 cd backend
-mvn test        # 14 tests: tenancy, auth, stripe webhooks
+mvn test        # 24 tests: tenancy, auth, stripe webhooks, GDPR
 
 cd frontend
 npx tsc --noEmit  # type check
 ```
 
 The backend suite covers tenant context isolation, schema name generation,
-Keycloak role mapping, and Stripe webhook signature verification.
+Keycloak role mapping, Stripe webhook signature verification, tenant-spoofing
+rejection, schema reset on pooled connections, and webhook idempotency.
+
+## Security notes
+
+- **Tenant identity comes from the JWT.** The `tenant_id` claim (mapped from
+  the Keycloak user attribute) is authoritative. The `X-Tenant-ID` header is
+  a routing hint only: `TenantConsistencyFilter` rejects any authenticated
+  request whose header disagrees with the token claim (403).
+- **Connections are always schema-safe.** `TenantAwareDataSource` sets the
+  tenant schema per checkout and resets to `public` when no tenant is in
+  context, so pooled connections cannot leak one tenant's data into another.
+- **GDPR endpoints are caller-bound.** Export resolves the user from the JWT
+  subject; there is no parameter to target another user. Erasure is
+  admin-only and scoped to the current tenant's schema.
+- **Stripe webhooks fail closed.** A missing webhook secret returns 500 (so
+  Stripe retries) instead of silently dropping events. Processed event IDs
+  are persisted for exactly-once handling of retried deliveries.
+- **Demo credentials** (`admin/admin`, `demo/demo`) are for local
+  development only and must never be used in production.
 
 ## Roadmap
 

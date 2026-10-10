@@ -6,10 +6,10 @@ import TenantAudit from './tenant/TenantAudit';
 function Login() {
   const login = () => {
     // Keycloak direct login; backend validates the JWT
-    const kc = 'http://localhost:8180/realms/tenantkit';
+    const kc = 'http://localhost:8180/realms/saaskit';
     const redirect = encodeURIComponent(window.location.origin + '/app');
     window.location.href =
-      `${kc}/protocol/openid-connect/auth?client_id=tenantkit-app&response_type=token&redirect_uri=${redirect}`;
+      `${kc}/protocol/openid-connect/auth?client_id=saaskit-app&response_type=token&redirect_uri=${redirect}`;
   };
   return (
     <div style={{ padding: 48 }}>
