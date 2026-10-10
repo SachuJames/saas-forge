@@ -43,7 +43,7 @@ public class GdprService {
         Map<String, Object> out = new HashMap<>();
         out.put("profile", Map.of(
                 "id", user.getId().toString(),
-                "email", user.get.email(),
+                "email", user.getEmail(),
                 "name", user.getName(),
                 "role", user.getRole(),
                 "created_at", user.getCreatedAt().toString()));

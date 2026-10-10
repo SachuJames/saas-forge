@@ -99,8 +99,11 @@ public class StripeWebhookController {
             return;
         }
         TenantContext.setTenantId(tenantId);
-        subscriptions.sync(sub.getId(), sub.getStatus(),
-                sub.getCurrentPeriodEnd());
+        Long periodEnd = sub.getItems().getData().stream()
+                .map(item -> item.getCurrentPeriodEnd())
+                .filter(p -> p != null)
+                .findFirst().orElse(null);
+        subscriptions.sync(sub.getId(), sub.getStatus(), periodEnd);
     }
 
     @Transactional
