@@ -11,10 +11,10 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.tenantforge</groupId>
-    <artifactId>tenant-forge</artifactId>
+    <groupId>com.saasforge</groupId>
+    <artifactId>saas-forge</artifactId>
     <version>0.1.0</version>
-    <name>TenantForge</name>
+    <name>SaaSForge</name>
     <description>Production-grade multi-tenant SaaS starter kit</description>
 
     <properties>
